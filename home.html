@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Aquaculture</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+  <div id="page">
+    <!--begin page -->
+
+    <div class="header">
+      <h1>AQUA<span>CULTURE</span></h1>
+      <h3>SUPERVISING</h3>
+    </div>
+
+    <div class="container" data-bind= "visible: !initialised()">
+      Loading, please wait...
+    </div>
+
+    <div class="container" data-bind= "visible: initialised" style="display:none">
+      <!--begin container -->
+
+      <div id="content">
+
+        <div class="box-full left">
+          <h2>Switch Control</h2>
+          <div data-bind="foreach: $root.availableRelays">
+            <div class="switchBox">
+              <div class="switchName" style="background-color:bisque"><strong data-bind="text: '&nbsp;' + name()"></strong></div>
+              <div class="switchSlider">
+                <label class="relaySwitch">
+                  <input class="relaySwitch-input" type="checkbox" data-bind= "checked: state, click: $root.onSwitchClick" />
+                  <span class="relaySwitch-label" data-on="On" data-off="Off"></span>
+                  <span class="relaySwitch-handle"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-full left">
+          <h2>Sensors</h2>
+          <div class="sensors-container">
+            <div class="sensors">
+              <p class="sensor">
+                <i class="fas fa-tint" style="color:#5bc0de"></i>
+                <span class="sensor-labels"><strong>Dissolved Oxygen</strong></span>
+                <span style="background-color:yellow"><strong data-bind = "text: status.dissolved_oxygen()"></strong></span>
+                <span class="units"><strong>mg/L</strong></span>
+              </p>
+              <hr>
+            </div>
+
+            <div class="sensors">
+              <p class="sensor">
+                <i class="fas fa-snowflake" style="color: teal"></i>
+                <span class="sensor-labels"><strong>pH</strong></span>
+                <span style="background-color:yellow"><strong data-bind = "text: status.ph()"></strong></span>
+                <sup class="units"></sup>
+              </p>
+              <hr>
+            </div>
+
+            <div class="sensors"> 
+            <p class="sensor">
+                <i class="fas fa-bolt" style="color:orchid"></i>
+                <span class="sensor-labels"><strong>TDS</strong></span>
+                <span style="background-color:yellow"><strong data-bind = "text: status.tds()"></strong></span>
+                <span class="units"><strong>ppm</strong></span>
+              </p>
+              <hr>
+            </div>
+
+            <div class="sensors">
+              <p class="sensor">
+                <i class="fas fa-thermometer-half" style="color:red"></i>
+                <span class="sensor-labels"><strong>Temperature</strong></span>
+                <span style="background-color:yellow"><strong data-bind = "text: status.temperature()"></strong></span>
+                <span class="units"><strong>°C</strong></span>
+              </p>
+              <hr>
+            </div>
+
+            <div class="sensors">
+              <p class="sensor">
+                <i class="fas fa-bookmark" aria-hidden="true" style="color:maroon"></i>
+                <span class="sensor-labels"><strong>Turbidity</strong></span>
+                <span style="background-color:yellow"><strong data-bind = "text: status.turbidity()"></strong></span>
+                <span class="units"><strong>ntu</strong></span>
+              </p>
+              <hr>
+            </div>
+
+            <div class="sensors">
+              <p class="sensor">
+                <i class="fas fa-cog" style="color: tomato"></i>
+                <span class="sensor-labels"><strong>Electric Conductivity</strong></span>
+                <span style="background-color:yellow"><strong data-bind = "text: status.EC()"></strong></span>
+                <span class="units"><strong>μS/cm</strong></span>
+              </p>
+              <hr>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="box-full left">
+          <h2>Alert Notifications</h2>
+          <div class="chocolate">
+            <h4 class = "secondt" data-bind="if: $data.status.dissolved_oxygen() < 20 || $data.status.ph() < 7 || $data.status.ph() > 8.5 || $data.status.tds() > 0 || $data.status.temperature() < 10 || $data.status.temperature() > 27 || $data.status.turbidity() > 1650 || $data.status.EC() > 0"><span><span style="background-color:lightgreen">Water sample</span> is <span style=background-color:yellow>not suitable</span> for rearing of Shrimps.</span></h4>
+            <h4 class = "thirdt" data-bind="if: $data.status.dissolved_oxygen() > 20 && $data.status.ph() > 7 && $data.status.ph() < 8.5 && $data.status.tds() < 0 && $data.status.temperature() > 10 && $data.status.temperature() < 27 && $data.status.turbidity() < 1650 && $data.status.EC() < 0"><span><span style="background-color:lightgreen">Water sample</span> is <span style=background-color:yellow>suitable</span> for rearing of Shrimps.</span></h4>
+          <h4 class = "secondt" data-bind="if: $data.status.dissolved_oxygen() < 20"><span><span style="background-color:lightgreen">Dissolved oxygen</span> content of water is <span style="background-color:yellow">below 3 mg/L</span> <br> Turn on aerator, ignore if aerator is already turned on.</span></h4>
+          <h4 class = "thirdt"" data-bind="if: $data.status.dissolved_oxygen() > 3"><span><span style="background-color:lightgreen">Dissolved oxygen</span> content of water is <span style="background-color:yellow">above 3 mg/L</span> <br> Turn off aerator, ignore if aerator is already turned off.</span></h4>
+          <h4 class = "secondt" data-bind="if: $data.status.ph() < 7"><span><span style="background-color:lightgreen">PH</span> value is <span style="background-color:yellow">below 7</span> <br> Increase ph by adding lime.</span></h4>
+          <h4 class = "secondt" data-bind="if: $data.status.ph() > 8.5"><span><span style="background-color:lightgreen">PH</span> value is <span style="background-color:yellow">above 8.5</span> <br> Decrease ph by adding Crystal Sugar.</span></h4>
+          <h4 class = "secondt" data-bind="if: $data.status.tds() > 0"><span><span style="background-color:lightgreen">TDS</span> value in water is <span style="background-color:yellow">above 1200 ppm</span> <br> Decrease tds in water.</span></h4>
+          <h4 class = "secondt" data-bind="if: $data.status.temperature() < 10"><span><span style="background-color:lightgreen">Temperature</span> of water is <span style="background-color:yellow">below 10 °C</span> <br> Increase water temperature.</span></h4>
+          <h4 class = "secondt" data-bind="if: $data.status.temperature() > 27"><span><span style="background-color:lightgreen">Temperature</span> of water is <span style="background-color:yellow">above 45 °C</span> <br> Decrease water temperature.</span></h4>
+          <h4 class = "secondt" data-bind="if: $data.status.turbidity() > 1650"><span><span style="background-color:lightgreen">Turbidity</span> of water is <span style="background-color:yellow">above 1650 ntu</span> <br> Decrease water turbidity.</span></h4>
+          <h4 class = "secondt" data-bind="if: $data.status.EC() > 0"><span><span style="background-color:lightgreen">Electric Conductivity</span> of water is <span style="background-color:yellow">above 2400 microsiemen/cm</span> <br> Decrease water Electric Conductivity.</span></h4>
+          </div>
+        </div>
+
+<div class="box-full left">
+  <h2>Database</h2>
+  <div class="wrapper">
+    <h4 class ="firstt"><a href="https://docs.google.com/spreadsheets/d/1xNUjeQlE_M4tdMUi6HQac_zk3phBupFkcsBk57JLhmw/edit?usp=sharing">Click here to access database.</a></h4>
+  </div>
+  <div class="chopper">
+    <div class="iframe-container">
+      <iframe src="https://docs.google.com/spreadsheets/d/1xNUjeQlE_M4tdMUi6HQac_zk3phBupFkcsBk57JLhmw/edit#gid=0" style="border: 3px solid red" ></iframe>
+    </div>
+</div>
+</div>
+
+
+        <div class="box-full left">
+          <h2>Charts</h2>
+          <canvas id="dataplot" width="400" height="400"></canvas>
+        </div>
+
+        <div class="box-full left">
+          <h2>Machine Learning Model</h2>
+          <div class="wrapper">
+            <h4 class ="firstt"><a href="https://www.cricket.com.au/">Click here to access ML model.</a></h4>
+          </div>
+        </div>
+
+        
+
+        <div class="box380 left">
+          <h2>Latest Data</h2>
+          <p>
+            <input type="checkbox" id="latest_data_enabled" data-bind= "checked: latest_data_enabled">
+            <label for="latest_data_enabled"><strong>Enable Data Info</strong></label>
+          </p>
+          <p>
+            <table data-bind= "visible: latest_data_enabled">
+              <tr>
+                <th>Key</th>
+                <th>Value</th>
+              </tr>
+              <tbody data-bind="foreach: last.values">
+                <tr>
+                  <td data-bind="text: key"></td>
+                  <td data-bind="text: value"></td>
+                </tr>
+              </tbody>
+            </table><br>
+          </p>
+        </div>
+
+        <div class="box380 right">
+          <h2>Logs</h2>
+          <p>
+            <input type="checkbox" id="logs_enabled" data-bind= "checked: logs_enabled">
+            <label for="latest_datat_enabled"><strong>Enable Logs</strong></label>
+          </p>
+          <p>
+            <table id="logsTable" data-bind = "visible: logs_enabled">
+              <tr>
+                <th>Timestamp</th>
+                <th>Log</th>
+              </tr>
+              <tbody data-bind="foreach: logs.entries">
+                <tr>
+                  <td data-bind="text: timestamp"></td>
+                  <td data-bind="text: log"></td>
+                </tr>
+              </tbody>
+            </table><br>
+          </p>
+        </div>
+
+        <div class="box-full left">
+          
+          <h2>Hardware Video Demo</h2>
+          <div class="chopper">
+            <div class="iframe-container">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/Y8CQAmgkhos?autoplay=1&mute=1&loop=1" style="border: 4px solid red" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <!-- <h4 class ="firstt"><a href="https://www.youtube.com/watch?v=Y8CQAmgkhos">Click here to view hardware video demo.</a></h4> -->
+          </div>
+          
+        </div>
+
+      </div>
+
+    </div>
+    <!--end container -->
+
+  </div>
+  <!--end page -->
+  <script src="lib.js" type="text/javascript"></script>
+  <script src="app.js" type="text/javascript"></script>
+</body>
+
+</html>
